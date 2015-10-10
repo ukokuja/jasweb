@@ -1,0 +1,138 @@
+<!--Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE HTML>
+<html ng-app="todoApp">
+<head>
+	<title> Storage ui kit Flat bootstrap Responsive  Website Template | Home :: w3layouts</title>
+	<link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all">
+	<link href="css/sweetalert.css" rel="stylesheet" type="text/css">
+	<link href="css/swal-forms.css" rel="stylesheet" type="text/css">
+	<script src="js/angular.min.js"></script>
+	<script src="js/angular-ui-router.js"></script>
+	<script src="js/angular-sanitize.js"></script>
+	<script src="js/firebase.js"></script>
+	<script src="js/sweetalert-dev.js"></script>
+	<script src="js/swal-forms.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/controllers.js"></script>
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="js/jquery-1.11.0.min.js"></script>
+	<script src="js/moment.js"></script>
+	<!-- Custom Theme files -->
+	<link href="css/style.css" rel="stylesheet" type="text/css" media="all"/>
+	<!-- Custom Theme files -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="keywords" content="Storage ui kit Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template,
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
+	<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+	<!--Google Fonts-->
+
+	<!-- start-smoth-scrolling -->
+	<script type="text/javascript" src="js/move-top.js"></script>
+	<script type="text/javascript" src="js/easing.js"></script>
+	<script type="text/javascript">
+		jQuery(document).ready(function($) {
+			$(".scroll").click(function(event){
+				event.preventDefault();
+				$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
+			});
+		});
+	</script>
+	<!-- //end-smoth-scrolling -->
+	<link href="css/jquery.countdown.css" rel="stylesheet" type="text/css" media="all" />
+	<script src="js/jquery.countdown.js"></script>
+	<script src="js/script.js"></script>
+	<!--responsive tab script here-->
+	<script src="js/easyResponsiveTabs.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('#horizontalTab').easyResponsiveTabs({
+				type: 'default', //Types: default, vertical, accordion
+				width: 'auto', //auto or any width like 600px
+				fit: true   // 100% fit in a container
+			});
+		});
+	</script>
+	<!--//resposive tab-->
+	<script>$(document).ready(function(c) {
+		$('.cros').on('click', function(c){
+			$('.user-profile').fadeOut('slow', function(c){
+				$('.user-profile').remove();
+			});
+		});
+	});
+	</script>
+	<!--video -->
+	<link href="css/jplayer.blue.monday.min.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="js/jquery.jplayer.min.js"></script>
+	<script type="text/javascript">
+		//<![CDATA[
+		$(document).ready(function(){
+
+			$("#jquery_jplayer_1").jPlayer({
+				ready: function () {
+					$(this).jPlayer("setMedia", {
+						title: "Finding Nemo Teaser",
+						m4v: "http://www.jplayer.org/video/m4v/Finding_Nemo_Teaser.m4v",
+						poster: "http://www.jplayer.org/video/poster/Finding_Nemo_Teaser_640x352.png"
+					});
+				},
+				swfPath: "../../dist/jplayer",
+				supplied: "m4v",
+				size: {
+					width: "100%",
+					height: "275px",
+					cssClass: "jp-video-360p"
+				},
+				useStateClassSkin: true,
+				autoBlur: false,
+				smoothPlayBar: true,
+				keyEnabled: true,
+				remainingDuration: true,
+				toggleDuration: true
+			});
+		});
+		//]]>
+	</script>
+	<!--//video-->
+
+</head>
+<body>
+<!--header start here-->
+<div class="header">
+	<!--header bottom start here-->
+	<div class="header-bottom">
+		<div ui-view="signin"></div>
+		<div ui-view="home"></div>
+		<div class="clearfix"> </div>
+	</div>
+	<div class="clearfix"> </div>
+</div>
+<div class="copy-right">
+	<!--<p>© 2015 Storage Ui Kit All rights reserved | Template by  <a href="http://w3layouts.com/" target="_blank">  W3layouts </a></p>-->
+	<script type="text/javascript">
+		$(document).ready(function() {
+			/*
+			 var defaults = {
+			 containerID: 'toTop', // fading element id
+			 containerHoverID: 'toTopHover', // fading element hover id
+			 scrollSpeed: 1200,
+			 easingType: 'linear'
+			 };
+			 */
+
+			$().UItoTop({ easingType: 'easeOutQuart' });
+
+		});
+	</script>
+	<a href="#" id="toTop" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
+
+</div>
+<!--header bottom end here-->
+<!--header end here-->
+</body>
+</html>

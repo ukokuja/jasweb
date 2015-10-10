@@ -1,0 +1,109 @@
+<div class="banner">
+	<div class="bann-left">
+		<span class="bann-part"> </span>
+		<div class="bann-text">
+			<h1>Want to search Analitycs History?</h1>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+		</div>
+	</div>
+	<div class="bann-rit">
+		<a href="#">EXPLORE</a>
+	</div>
+	<div class="clearfix"> </div>
+</div>
+<!--part1 start here-->
+<div class="bar-kit">
+	<div class="col-md-5 header-bot-right-part-1">
+		<!--latest activity strta here-->
+		<div class="latest-activity">
+			<div class="latest-act-top">
+				<h4>LATEST ACTIVITY</h4>
+				<span class="rocket"> </span>
+				<div class="clearfix"> </div>
+			</div>
+			<div class="latest-act-bot">
+				<ul>
+					<li><span class="box"> </span></li>
+					<li><span class="line"> </span></li>
+					<li><span class="box"> </span></li>
+					<li><span class="line"> </span></li>
+					<li><span class="box"> </span></li>
+					<li><span class="line"> </span></li>
+					<li><span class="box"> </span></li>
+					<li><span class="line"> </span></li>
+					<li><span class="box"> </span></li>
+					<li><span class="line"> </span></li>
+				</ul>
+				<div class="latest-today">
+					<h4>Today,3.20AM</h4>
+					<h3>NEW INVOICE SUBMITED</h3>
+					<p>Viris phaedrum ad cum, in usu ipsum percipit. Ut ponderum percipitur este -by <span class="todt-joe"> Joe Black </span></p>
+				</div>
+				<div class="latest-today">
+					<h4>Today,2.45AM</h4>
+					<h3>ORDER PLACED</h3>
+					<p>Viris phaedrum ad cum, in usu ipsum percipit. Ut ponderum percipitur este -by <span class="todt-joe"> Joe Black </span></p>
+				</div>
+				<div class="latest-today">
+					<h4>Today,5.15AM</h4>
+					<h3>PRICE CHANGE</h3>
+					<p>Viris phaedrum ad cum, in usu ipsum percipit. Ut ponderum percipitur este -by <span class="todt-joe"> Joe Black </span></p>
+				</div>
+				<div class="latest-today">
+					<h4>Today,12.06AM</h4>
+					<h3>SITE UPDATE</h3>
+					<p>Viris phaedrum ad cum, in usu ipsum percipit. Ut ponderum percipitur este -by <span class="todt-joe"> Joe Black </span></p>
+				</div>
+				<div class="latest-today">
+					<h4>NEW PRODUCTS</h4>
+					<h3>NEW INVOICE SUBMITED</h3>
+					<p>Viris phaedrum ad cum, in usu ipsum percipit. Ut ponderum percipitur este -by <span class="todt-joe"> Joe Black </span></p>
+				</div>
+			</div>
+			<div class="late-btn">
+				<a href="#">LOAD MORE</a>
+			</div>
+		</div>
+	</div>
+	<!--part2 start here-->
+	<div class="col-md-7 header-bot-right-part-2">
+		<!--meeting strta here-->
+		<div class="meeting">
+			<div class="meeting-top">
+				<h3>Templates</h3>
+					<div class="bann-rit">
+						<a href="#" ng-click="addTemplate()">ADD</a>
+					</div>
+				<div class="clearfix"> </div>
+			</div>
+			<div class="meet-search">
+				<input type="text" placeholder="Search" ng-model="searchText" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search';}"/>
+				<input type="submit" value="">
+			</div>
+			<div class="menu_vertical">
+				<section class="accordation_menu">
+					<div ng-repeat="template in templateArray | filter: searchText" ng-if="template.online">
+						<input id="label-{{$index}}" name="lida" type="radio" checked/>
+						<label for="label-{{$index}}" id="item{{$index}}"><i class="ferme"> </i> <span class="tickimg"><img src="images/check.png" alt=""><i> </i>Last used {{template.title}}<strong  class="tad-timer"> <i class="tab-text-time">{{getDate(template.date)}}</i></strong></span><small class="pen" ng-click="edit(template)"> </small> <i class="icon-plus-sign i-right1"> </i> <i class="icon-minus-sign i-right2" ng-click="remove(template)"></i> </label>
+						<div class="content1" id="a1">
+							<ul class="news_list">
+								<li><img src="images/1.png" alt=""> </li>
+								<li class="date_desc-auther"><p>{{getAuthor(template.author)}}</p></li>
+								<li class="date_desc-timer"><p>Created {{getDate(template.created)}}</p></li>
+							</ul>
+							<div class="auther-para" compile="template.replaced">
+							</div>
+							<!--<div class="involed-people">
+								<h4>PEOPLE INVOLVED:</h4>
+								<img src="images/invitation.png" alt="">
+							</div>-->
+							<div class="bann-rit">
+								<a href="#" ng-click="pushNotification(template.key)">PUSH</a>
+							</div>
+						</div>
+					</div>
+					<div class="clearfix"> </div>
+				</section>
+			</div>
+		</div>
+	</div>

@@ -1,0 +1,25 @@
+<div class="col-md-6 col-md-offset-3 header-bot-left">
+
+    <div class="login">
+        <h4>SIMPLE  LOGIN FORM</h4>
+        <form>
+            <div class="login-name">
+                <span class="login-user"> </span>
+                <input ng-model="user.email" type="text" value="Username" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Username';}"/>
+            </div>
+            <div class="login-password">
+                <span class="login-key"> </span>
+                <input ng-model="user.password" type="password" value="Password" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Password';}"/>
+            </div>
+        </form>
+        <div class="remember">
+                <span class="checkbox1">
+                     <label class="checkbox"><input type="checkbox" name="checkbox" checked=""><i> </i>Remember me</label>
+                </span>
+            <div class="send">
+                <input ng-click="signin()" type="submit" value="LOGIN">
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+    </div>
+</div>
