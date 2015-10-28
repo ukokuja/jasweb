@@ -106,8 +106,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <div class="header">
 	<!--header bottom start here-->
 	<div class="header-bottom">
-		<div ui-view="signin"></div>
-		<div ui-view="home"></div>
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1">
+				<div ui-view="signin"></div>
+				<div ui-view="home"></div>
+			</div>
+		</div>
 		<div class="clearfix"> </div>
 	</div>
 	<div class="clearfix"> </div>

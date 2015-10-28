@@ -35,7 +35,6 @@ a:hover {
 .header {
   width: 90%;
   margin: 0 auto 0em;
-  padding:3em 0em 4em 0em;
 }
 .header h3.main-head {
   text-align: center;
@@ -940,11 +939,11 @@ span.menu-at-on,span.menu-at-on1{
   font-size: 1em;
   padding: 0.8em 1em;
   outline: none;
-  width: 85%;
+  width: 84%;
 }
 .meet-search input[type="submit"] {
   background: url(../images/search.png)no-repeat #474F70 20px 13px;
-  width: 14.49%;
+  width: 15.38%;
   border: 0px;
   height: 30px;
   display: inline-block;
@@ -1465,12 +1464,14 @@ span.localpointer {
   font-family: 'SignikaNegative-Regular';
 }
 span.bann-part {
-  background: url(../images/part.png)no-repeat;
   width: 60px;
   height: 60px;
   display: inline-block;
   margin: 0em 0.8em 0em 0em;
   vertical-align: top;
+}
+.bann-part img{
+  width: 60px;
 }
 .bann-text {
   display: inline-block;
@@ -1520,7 +1521,7 @@ span.rocket {
 .latest-act-bot span.line {
   background: #eeeeee;
   width: 1px;
-  height: 120px;
+  height: 80px;
   display: block;
   margin: 1px 0px 1px 4px;
 }

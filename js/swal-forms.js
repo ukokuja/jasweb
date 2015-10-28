@@ -163,6 +163,7 @@
       value: field.value || '',
       type: field.type || 'text',
       model: field.model || 'templateEdit',
+      label: field.label,
       isRadioOrCheckbox: function() {
         return isRadioOrCheckbox(input)
       },
@@ -179,7 +180,7 @@
 
       }
     }
-    input.label = input.isRadioOrCheckbox() ? input.value : ''
+    input.label = input.isRadioOrCheckbox() ? input.label : input.value;
     input.clazz = !input.isRadioOrCheckbox() ? 'nice-input' : 'patch-swal-styles-for-inputs'
 
     return input

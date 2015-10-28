@@ -31,9 +31,24 @@ app.controller('SignInCtrl', function($scope, $state) {
         $scope.usuario = JSON.parse(localStorage.getItem('usuario'));
         $scope.templatesRef = new Firebase('https://jasweb.firebaseio.com/templates');
         $scope.notificationsRef = new Firebase('https://jasweb.firebaseio.com/notifications');
+        $scope.userRef = new Firebase('https://jasweb.firebaseio.com/user');
+        $scope.jasRef = new Firebase('https://jas.firebaseio.com');
         $scope.templates = {};
         $scope.templateArray = [];
         $scope.models = {};
+        $scope.activities = {};
+        $scope.activitiesArray = [];
+        $scope.userRef.limitToFirst(10).once('value', function(userSnapshot){
+            $scope.notificationsRef.limitToFirst(10).once('value', function(notifSnapshot){
+                $timeout(function(){
+                    $scope.activities = userSnapshot.val();
+                    for (var attrname in notifSnapshot.val()) { $scope.activities[attrname] = notifSnapshot.val()[attrname]; $scope.activities[attrname].notification = true;}
+                    angular.forEach($scope.activities, function(val){
+                        $scope.activitiesArray.push(val);
+                    });
+                })
+            })
+        })
         $scope.templatesRef.once('value', function(templatesSnapshot){
             $timeout(function(){
                 $scope.templates = templatesSnapshot.val();
@@ -53,10 +68,68 @@ app.controller('SignInCtrl', function($scope, $state) {
         })
         $scope.getDate = function(date){
             mill = new Date(date);
-            return mill.toDateString();
+            return moment(moment(mill).format('YYYYMMDD,h:mm a'), "YYYYMMDD,h:mm a").fromNow();
         }
         $scope.getAuthor = function(user){
             return user.substr(0, user.indexOf("@"));
+        }
+        $scope.addUser = function(){
+            swal.withForm({
+                title: "Add new user",
+                text: '',
+                showCancelButton: true,
+                confirmButtonColor: '#DD6B55',
+                confirmButtonText: 'Save',
+                closeOnConfirm: true,
+                closeOnCancel: true,
+                formFields: [
+                    { id:'email', name: 'email', placeholder: "E-mail", type: 'email'},
+                    { id:'password', name: 'password', placeholder: "Password", type: 'password'},
+                    { id:'admin', name: 'admin', value: "true" , type: 'checkbox', label : "Admin"},
+                ]
+            }, function(isConfirm){
+                var email =  $('#email').val();
+                var password = $('#password').val();
+                var admin = $('#admin').is(":checked");
+                if(isConfirm && email && password){
+                    $scope.jasRef.createUser({
+                        email: email,
+                        password: password
+                    }, function(error, userData) {
+                        $(".sweet-alert").remove();
+                        if (error) {
+                            swal({
+                                title: "Error",
+                                text: "There was an error creating the user",
+                                type: "error",
+                                showCancelButton: false,
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: false
+                            }, function() {
+                                location.reload();
+                            });
+                        } else {
+                            $scope.userRef.push({
+                                "email": email,
+                                "uid" : userData.uid,
+                                "isAdmin" : admin,
+                                "date" : Firebase.ServerValue.TIMESTAMP
+                            })
+                            swal({
+                                title: "User created",
+                                text: "",
+                                type: "success",
+                                showCancelButton: false,
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: false
+                            }, function() {
+                                location.reload();
+                            });
+                        }
+                    });
+
+                }
+            })
         }
         $scope.pushNotification = function(key){
             var template = $scope.templates[key];
@@ -69,7 +142,8 @@ app.controller('SignInCtrl', function($scope, $state) {
             var notification = {
                 "title": template.title,
                 "text" : text,
-                "author" : template.author
+                "author" : template.author,
+                "date" : Firebase.ServerValue.TIMESTAMP
             }
             swal({
                 title: "Are you sure?",
@@ -84,6 +158,9 @@ app.controller('SignInCtrl', function($scope, $state) {
             }, function(isConfirm) {
                 if (isConfirm) {
                     $scope.notificationsRef.push(notification);
+                    $scope.templatesRef.child(key).update({
+                        "date" : Firebase.ServerValue.TIMESTAMP
+                    })
                     swal({
                         title: "Pushed",
                         text: "",
