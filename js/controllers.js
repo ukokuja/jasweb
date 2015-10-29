@@ -24,18 +24,20 @@ app.controller('SignInCtrl', function($scope, $state) {
     .controller('AppCtrl', function(){
 
     })
-    .controller('HomeCtrl', function($scope, $timeout){
+    .controller('HomeCtrl', function($scope, $timeout, $location){
         if(!localStorage.getItem('userId')){
-            $state.go('signin');
+            $location.path('signin');
         }
         $scope.usuario = JSON.parse(localStorage.getItem('usuario'));
         $scope.templatesRef = new Firebase('https://jasweb.firebaseio.com/templates');
         $scope.notificationsRef = new Firebase('https://jasweb.firebaseio.com/notifications');
         $scope.userRef = new Firebase('https://jasweb.firebaseio.com/user');
+
         $scope.jasRef = new Firebase('https://jas.firebaseio.com');
         $scope.templates = {};
         $scope.templateArray = [];
-        $scope.models = {};
+        $scope.modelsEN = {};
+        $scope.modelsFR = {};
         $scope.activities = {};
         $scope.activitiesArray = [];
         $scope.userRef.limitToFirst(10).once('value', function(userSnapshot){
@@ -54,14 +56,24 @@ app.controller('SignInCtrl', function($scope, $state) {
                 $scope.templates = templatesSnapshot.val();
                 angular.forEach($scope.templates, function(val, key){
                     val.key = key;
-                    var splitted = val.text.split('<>');
+                    var splittedEN = val.textEN.split('<>');
+                    var textEN = "";
+                    $scope.modelsEN[key] = [];
+                    for(var i = 0; i<splittedEN.length-1; i++){
+                        textEN +=splittedEN[i] + '<input type="text" ng-model="modelsEN['+i+']">'
+                    }
+                    textEN +=splittedEN[i++];
+                    val.replacedEN =textEN;
+
+                    var splitted = val.textFR.split('<>');
                     var text = "";
-                    $scope.models[key] = [];
+                    $scope.modelsFR[key] = [];
                     for(var i = 0; i<splitted.length-1; i++){
-                        text +=splitted[i] + '<input type="text" ng-model="models['+i+']">'
+                        text +=splitted[i] + '<input type="text" ng-model="modelsFR['+i+']">'
                     }
                     text +=splitted[i++];
-                    val.replaced =text;
+                    val.replacedFR =text;
+
                     $scope.templateArray.push($scope.templates[key]);
                 })
             })
@@ -85,63 +97,118 @@ app.controller('SignInCtrl', function($scope, $state) {
                 formFields: [
                     { id:'email', name: 'email', placeholder: "E-mail", type: 'email'},
                     { id:'password', name: 'password', placeholder: "Password", type: 'password'},
-                    { id:'admin', name: 'admin', value: "true" , type: 'checkbox', label : "Admin"},
+                    { id:'firstname', name: 'name', placeholder: "First name", type: 'text'},
+                    { id:'lastname', name: 'last', placeholder: "Last name", type: 'text'},
+                    { id:'phone', name: 'phone', placeholder: "Phone", type: 'number'},
+                    { id:'isNotification', name: 'isNotification', value: "true" , type: 'checkbox', label : "Send notifications"},
+                    { id:'isEmail', name: 'isEmail', value: "false" , type: 'checkbox', label : "Send email"},
+                    { id:'admin', name: 'admin', value: "false" , type: 'checkbox', label : "Admin"},
                 ]
             }, function(isConfirm){
                 var email =  $('#email').val();
                 var password = $('#password').val();
                 var admin = $('#admin').is(":checked");
+                var firstname = $('#firstname').val();
+                var lastname = $('#lastname').val();
+                var phone = $('#phone').val();
+                var isNotification = $('#isNotification').is(":checked");
+                var isEmail = $('#isEmail').is(":checked");
                 if(isConfirm && email && password){
-                    $scope.jasRef.createUser({
-                        email: email,
-                        password: password
-                    }, function(error, userData) {
-                        $(".sweet-alert").remove();
-                        if (error) {
-                            swal({
-                                title: "Error",
-                                text: "There was an error creating the user",
-                                type: "error",
-                                showCancelButton: false,
-                                confirmButtonText: "Ok",
-                                closeOnConfirm: false
-                            }, function() {
-                                location.reload();
-                            });
-                        } else {
-                            $scope.userRef.push({
-                                "email": email,
-                                "uid" : userData.uid,
-                                "isAdmin" : admin,
-                                "date" : Firebase.ServerValue.TIMESTAMP
-                            })
-                            swal({
-                                title: "User created",
-                                text: "",
-                                type: "success",
-                                showCancelButton: false,
-                                confirmButtonText: "Ok",
-                                closeOnConfirm: false
-                            }, function() {
-                                location.reload();
-                            });
-                        }
-                    });
+                    if(admin) {
+                        $scope.userRef.createUser({
+                            email: email,
+                            password: password
+                        }, function(error) {
+                            $(".sweet-alert").remove();
+                            if (error) {
+                                swal({
+                                    title: "Error",
+                                    text: "There was an error creating the user",
+                                    type: "error",
+                                    showCancelButton: false,
+                                    confirmButtonText: "Ok",
+                                    closeOnConfirm: false
+                                }, function() {
+                                    location.reload();
+                                });
+                            } else {
+                                swal({
+                                    title: "User created",
+                                    text: "",
+                                    type: "success",
+                                    showCancelButton: false,
+                                    confirmButtonText: "Ok",
+                                    closeOnConfirm: false
+                                }, function() {
+                                    location.reload();
+                                });
+                            }
+                        });
+                    }else{
+                        $scope.jasRef.createUser({
+                            email: email,
+                            password: password
+                        }, function(error, userData) {
+                            $(".sweet-alert").remove();
+                            if (error) {
+                                swal({
+                                    title: "Error",
+                                    text: "There was an error creating the user",
+                                    type: "error",
+                                    showCancelButton: false,
+                                    confirmButtonText: "Ok",
+                                    closeOnConfirm: false
+                                }, function() {
+                                    location.reload();
+                                });
+                            } else {
+                                var newuser = {
+                                    email: email,
+                                    firstname: firstname,
+                                    lastname: lastname,
+                                    isNotification: isNotification,
+                                    isEmail: isEmail,
+                                    phone: phone,
+                                    author: $scope.usuario.password.email
+                                };
+                                $scope.jasRef.child('uid').child(userData.uid).set(
+                                    newuser
+                                );
+                                swal({
+                                    title: "User created",
+                                    text: "",
+                                    type: "success",
+                                    showCancelButton: false,
+                                    confirmButtonText: "Ok",
+                                    closeOnConfirm: false
+                                }, function() {
+                                    location.reload();
+                                });
+                            }
+                        });
+                    }
 
                 }
             })
         }
         $scope.pushNotification = function(key){
             var template = $scope.templates[key];
-            var splitted = template.text.split('<>');
+            var splitted = template.textEN.split('<>');
             var text = "";
             for(var i = 0; i<splitted.length-1; i++){
-                text +=splitted[i] + $scope.models[i];
+                text +=splitted[i] + $scope.modelsEN[i];
             }
             text += splitted[i++];
+            var splittedFR = template.textFR.split('<>');
+            var textFR = "";
+            for(var i = 0; i<splittedFR.length-1; i++){
+                textFR +=splittedFR[i] + $scope.modelsFR[i];
+            }
+            textFR += splitted[i++];
             var notification = {
                 "title": template.title,
-                "text" : text,
+                "textEN" : text,
+                "textFR": textFR,
                 "author" : template.author,
                 "date" : Firebase.ServerValue.TIMESTAMP
             }
@@ -183,13 +250,16 @@ app.controller('SignInCtrl', function($scope, $state) {
                 confirmButtonText: 'Save',
                 closeOnConfirm: true,
                 formFields: [
-                    { id:'template', name: 'template', value: template.text, type: 'textarea' , model: 'templateEdit'},
+                    { id:'templateEN', name: 'templateEN', value: template.textEN, type: 'textarea' , placeholder: 'English'},
+                    { id:'templateFR', name: 'templateFR', value: template.textFR, type: 'textarea' , placeholder: 'French'},
                 ]
             }, function(isConfirm){
-                var text =  $('#template').val();
+                var textEN =  $('#templateFR').val();
+                var textFR =  $('#templateEN').val();
                 if(isConfirm){
                     $scope.templatesRef.child(template.key).update({
-                        text: text
+                        textEN: textEN,
+                        textFR: textFR
                     })
                     location.reload();
                 }
@@ -207,17 +277,24 @@ app.controller('SignInCtrl', function($scope, $state) {
                 type: 'input',
                 inputPlaceholder: "Title",
                 formFields: [
-                    { id:'template', name: 'template',  type: 'textarea' , model: 'templateEdit'},
+                    { id:'templateEN', name: 'template',  type: 'textarea' , model: 'templateEdit', placeholder: 'English'},
+                    { id:'templateFR', name: 'template',  type: 'textarea' , model: 'templateEdit', placeholder: 'French'},
                 ]
             }, function(inputValue){
                 if (inputValue === false) return false;
-                if (inputValue === "" || $('#template').val() === "") {
+                if (inputValue === "" || $('#templateEN').val() === "" || $('#templateFR').val() === "") {
                     swal.showInputError("You need to write something!");
                     return false
                 }
-                var text =  $('#template').val();
+
+                var textEN =  $('#templateEN').val();
+                textEN = textEN.replace(/[\n]/g, '<br>');
+                var textFR =  $('#templateFR').val();
+                textFR = textFR.replace(/[\n]/g, '<br>');
+
                 $scope.templatesRef.push({
-                    text: text,
+                    textEN: textEN,
+                    textFR: textFR,
                     title: inputValue,
                     created: Date.now(),
                     date: Date.now(),

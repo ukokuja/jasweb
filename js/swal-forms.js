@@ -174,8 +174,7 @@
               "<label for='{name}'>{label}</label>", input)
         }else{
           return t("<textarea ng-model='{model}' style='display: block; resize: none;height: 88%;' id='{id}' class='{clazz}'  name='{name}'" +
-              " title='{placeholder}' placeholder='{placeholder}'>{value}</textarea>" +
-              "<label for='{name}'>{label}</label>", input)
+              " title='{placeholder}' placeholder='{placeholder}'>{value}</textarea>", input)
         }
 
       }

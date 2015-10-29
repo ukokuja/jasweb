@@ -30,7 +30,18 @@
 					<h4>{{getDate(activity.date)}}</h4>
 					<h3 ng-if="activity.notification">Push notification</h3>
 					<h3 ng-if="!activity.notification">User created</h3>
-					<p ng-if="activity.notification">{{activity.text}} <strong>by</strong> <span class="todt-joe"> {{activity.author}} </span></p>
+					<div ng-if="activity.notification" class="allNotification">
+						<strong>
+							ENGLISH
+						</strong>
+						<p compile="activity.textEN" class="englishText"></p>
+						<strong>
+							FRENCH
+						</strong>
+						<p compile="activity.textFR"></p>
+					</div>
+					<strong>by</strong>
+					<span class="todt-joe"> {{activity.author}} </span>
 					<p ng-if="!activity.notification"><span class="todt-joe"> {{activity.email}}</span></p>
 				</div>
 			</div>
@@ -45,9 +56,9 @@
 		<div class="meeting">
 			<div class="meeting-top">
 				<h3>Templates</h3>
-					<div class="bann-rit">
-						<a href="#" ng-click="addTemplate()">ADD</a>
-					</div>
+				<div class="bann-rit">
+					<a href="#" ng-click="addTemplate()">ADD</a>
+				</div>
 				<div class="clearfix"> </div>
 			</div>
 			<div class="meet-search">
@@ -65,7 +76,11 @@
 								<li class="date_desc-auther"><p>{{getAuthor(template.author)}}</p></li>
 								<li class="date_desc-timer"><p>Created {{getDate(template.created)}}</p></li>
 							</ul>
-							<div class="auther-para" compile="template.replaced">
+							<div id="textENFR">
+								<div class="auther-para textEnglishFrench" compile="template.replacedEN" id="textEnglish">
+								</div>
+								<div class="auther-para textEnglishFrench" compile="template.replacedFR" id="textFrench">
+								</div>
 							</div>
 							<!--<div class="involed-people">
 								<h4>PEOPLE INVOLVED:</h4>
