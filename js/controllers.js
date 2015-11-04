@@ -24,7 +24,7 @@ app.controller('SignInCtrl', function($scope, $state) {
     .controller('AppCtrl', function(){
 
     })
-    .controller('HomeCtrl', function($scope, $timeout, $location){
+    .controller('HomeCtrl', function($scope, $timeout, $location, $http){
         if(!localStorage.getItem('userId')){
             $location.path('signin');
         }
@@ -227,17 +227,22 @@ app.controller('SignInCtrl', function($scope, $state) {
                     $scope.notificationsRef.push(notification);
                     $scope.templatesRef.child(key).update({
                         "date" : Firebase.ServerValue.TIMESTAMP
-                    })
-                    swal({
-                        title: "Pushed",
-                        text: "",
-                        type: "success",
-                        showCancelButton: false,
-                        confirmButtonText: "Ok",
-                        closeOnConfirm: false
-                    }, function() {
-                        location.reload();
                     });
+                    notification.textEN = notification.textEN.replace(/<br>/g, ' ');
+                    notification.textFR = notification.textFR.replace(/<br>/g, ' ');
+                    var url = "http://morning-everglades-9603.herokuapp.com/notification?";
+                    $http.get(url+'textEN='+notification.textEN+'&textFR='+notification.textFR+'&titleEN='+notification.title+'&titleFR='+notification.title)
+                        .then(swal({
+                            title: "Pushed",
+                            text: "",
+                            type: "success",
+                            showCancelButton: false,
+                            confirmButtonText: "Ok",
+                            closeOnConfirm: false
+                        }, function() {
+                            location.reload();
+                        }));
+
                 }
             });
         }
