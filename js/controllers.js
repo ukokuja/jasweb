@@ -69,7 +69,7 @@ app.controller('SignInCtrl', function($scope, $state) {
                     var text = "";
                     $scope.modelsFR[key] = [];
                     for(var i = 0; i<splitted.length-1; i++){
-                        text +=splitted[i] + '<input type="text" ng-model="modelsFR['+i+']">'
+                        text +=splitted[i] + '<input type="text" ng-model="modelsEN['+i+']">'
                     }
                     text +=splitted[i++];
                     val.replacedFR =text;
@@ -100,6 +100,7 @@ app.controller('SignInCtrl', function($scope, $state) {
                     { id:'firstname', name: 'name', placeholder: "First name", type: 'text'},
                     { id:'lastname', name: 'last', placeholder: "Last name", type: 'text'},
                     { id:'phone', name: 'phone', placeholder: "Phone", type: 'number'},
+                    { id:'plan', name: 'plan', placeholder: "0, 1 or 2", type: 'number'},
                     { id:'isNotification', name: 'isNotification', value: "true" , type: 'checkbox', label : "Send notifications"},
                     { id:'isEmail', name: 'isEmail', value: "false" , type: 'checkbox', label : "Send email"},
                     { id:'admin', name: 'admin', value: "false" , type: 'checkbox', label : "Admin"},
@@ -111,6 +112,7 @@ app.controller('SignInCtrl', function($scope, $state) {
                 var firstname = $('#firstname').val();
                 var lastname = $('#lastname').val();
                 var phone = $('#phone').val();
+                var plan = $('#plan').val();
                 var isNotification = $('#isNotification').is(":checked");
                 var isEmail = $('#isEmail').is(":checked");
                 if(isConfirm && email && password){
@@ -162,27 +164,34 @@ app.controller('SignInCtrl', function($scope, $state) {
                                     location.reload();
                                 });
                             } else {
-                                var newuser = {
-                                    email: email,
-                                    firstname: firstname,
-                                    lastname: lastname,
-                                    isNotification: isNotification,
-                                    isEmail: isEmail,
-                                    phone: phone,
-                                    author: $scope.usuario.password.email
-                                };
-                                $scope.jasRef.child('uid').child(userData.uid).set(
-                                    newuser
-                                );
-                                swal({
-                                    title: "User created",
-                                    text: "",
-                                    type: "success",
-                                    showCancelButton: false,
-                                    confirmButtonText: "Ok",
-                                    closeOnConfirm: false
-                                }, function() {
-                                    location.reload();
+                                $scope.jasRef.child('reverse').child(btoa(email)).set(userData.uid, function(){
+                                    $http({
+                                        method: 'GET',
+                                        url: 'https://morning-everglades-9603.herokuapp.com/newuser/?email='+email+'&plan='+plan
+                                    }).then(function successCallback(response) {
+                                        var newuser = {
+                                            email: email,
+                                            firstname: firstname,
+                                            lastname: lastname,
+                                            isNotification: isNotification,
+                                            isEmail: isEmail,
+                                            phone: phone,
+                                            author: $scope.usuario.password.email
+                                        };
+                                        $scope.jasRef.child('uid').child(userData.uid).set(
+                                            newuser
+                                        );
+                                        swal({
+                                            title: "User created",
+                                            text: "",
+                                            type: "success",
+                                            showCancelButton: false,
+                                            confirmButtonText: "Ok",
+                                            closeOnConfirm: false
+                                        }, function() {
+                                            location.reload();
+                                        });
+                                    });
                                 });
                             }
                         });
@@ -202,7 +211,7 @@ app.controller('SignInCtrl', function($scope, $state) {
             var splittedFR = template.textFR.split('<>');
             var textFR = "";
             for(var i = 0; i<splittedFR.length-1; i++){
-                textFR +=splittedFR[i] + $scope.modelsFR[i];
+                textFR +=splittedFR[i] + $scope.modelsEN[i];
             }
             textFR += splitted[i++];
             var notification = {
