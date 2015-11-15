@@ -1,4 +1,6 @@
 app.controller('SignInCtrl', function($scope, $state) {
+    $scope.jas = new Firebase('https://jas.firebaseio.com/');
+    $scope.jas.child('alive').set(Firebase.ServerValue.TIMESTAMP);
     if(localStorage.getItem('userId')){
         $state.go('home');
     }
@@ -25,6 +27,8 @@ app.controller('SignInCtrl', function($scope, $state) {
 
     })
     .controller('HomeCtrl', function($scope, $timeout, $location, $http){
+        $scope.jas = new Firebase('https://jas.firebaseio.com/');
+        $scope.jas.child('alive').set(Firebase.ServerValue.TIMESTAMP);
         if(!localStorage.getItem('userId')){
             $location.path('signin');
         }
@@ -33,7 +37,6 @@ app.controller('SignInCtrl', function($scope, $state) {
         $scope.notificationsRef = new Firebase('https://jasweb.firebaseio.com/notifications');
         $scope.userRef = new Firebase('https://jasweb.firebaseio.com/user');
 
-        $scope.jasRef = new Firebase('https://jas.firebaseio.com');
         $scope.templates = {};
         $scope.templateArray = [];
         $scope.modelsEN = {};
